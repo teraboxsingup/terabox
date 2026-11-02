@@ -1,308 +1,270 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TeraBox 数据仪表板</title>
 
-    <title>TeraBox 数据仪表板</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+body {
+    font-family: Arial, "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+    color: white;
+    background: linear-gradient(135deg, #4338ca, #9333ea, #ec4899);
+}
 
-        body {
-            font-family: Arial, "Microsoft YaHei", sans-serif;
-            background: #f3f6fc;
-            color: #1e293b;
-            min-height: 100vh;
-        }
+header {
+    text-align: center;
+    padding: 22px 15px 10px;
+}
 
-        /* 页眉和标志 */
-        header {
-            background: #ffffff;
-            padding: 25px 20px;
-            text-align: center;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
-        }
+.logo {
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
+    background: white;
+    border-radius: 20px;
+    padding: 4px;
+    box-shadow: 0 8px 25px #24145044;
+}
 
-        .logo {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            display: block;
-            margin: 0 auto;
-            border-radius: 20px;
-        }
+.container {
+    width: 100%;
+    max-width: 1000px;
+    min-height: calc(100vh - 155px);
+    margin: auto;
+    padding: 20px 25px 30px;
+}
 
-        /* 主仪表板 */
-        .container {
-            width: 90%;
-            max-width: 850px;
-            margin: 35px auto;
-        }
+.page-title {
+    text-align: center;
+    font-size: clamp(27px, 4vw, 38px);
+    margin-bottom: 28px;
+    font-weight: 800;
+}
 
-        .page-title {
-            font-size: 25px;
-            margin-bottom: 25px;
-            text-align: center;
-            color: #1e293b;
-        }
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
 
-        /* 数据卡片 */
-        .dashboard {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+.card {
+    width: 100%;
+    min-height: 190px;
+    padding: 30px;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 12px 30px #24145033;
+    border: 1px solid #ffffff55;
+    transition: transform 0.25s;
+}
 
-        .card {
-            width: 100%;
-            padding: 25px 28px;
-            border-radius: 16px;
-            transition: 0.25s;
-        }
+.card:hover {
+    transform: translateY(-4px);
+}
 
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        }
+.clicks-card {
+    background: linear-gradient(120deg, #fb7185, #dc2626);
+}
 
-        /* 红色点击量卡片 */
-        .clicks-card {
-            background: #fff0f0;
-            border: 1px solid #fecaca;
-            box-shadow: 0 5px 20px rgba(220, 38, 38, 0.07);
-        }
+.downloads-card {
+    background: linear-gradient(120deg, #f87171, #be123c);
+}
 
-        /* 红色下载量卡片 */
-        .downloads-card {
-            background: #ffe8e8;
-            border: 1px solid #fca5a5;
-            box-shadow: 0 5px 20px rgba(220, 38, 38, 0.07);
-        }
+.earnings-card {
+    background: linear-gradient(120deg, #4ade80, #15803d);
+}
 
-        /* 绿色收益卡片 */
-        .earnings-card {
-            background: #eafaf0;
-            border: 1px solid #a7f3c0;
-            box-shadow: 0 5px 20px rgba(22, 163, 74, 0.07);
-        }
+.card-content {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
 
-        .card-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-        }
+.icon {
+    width: 75px;
+    height: 75px;
+    min-width: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    border-radius: 22px;
+    background: #ffffff33;
+    border: 1px solid #ffffff55;
+}
 
-        .left-section {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
+.card h2 {
+    font-size: clamp(18px, 2.5vw, 23px);
+    margin-bottom: 14px;
+    font-weight: 600;
+}
 
-        .icon {
-            width: 55px;
-            height: 55px;
-            min-width: 55px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-        }
+.number {
+    font-size: clamp(32px, 4vw, 43px);
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
 
-        .clicks-icon {
-            background: #fecaca;
-        }
+.daily-update {
+    margin-top: 28px;
+    padding: 18px 12px;
+    text-align: center;
+    border-radius: 15px;
+    background: #fff1f2;
+    color: #dc2626;
+    border: 2px solid #fecaca;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 8px 24px #24145022;
+}
 
-        .downloads-icon {
-            background: #fca5a5;
-        }
+footer {
+    text-align: center;
+    padding: 18px 12px 24px;
+    font-size: 13px;
+    color: #ffffffd9;
+}
 
-        .earnings-icon {
-            background: #bbf7d0;
-        }
+@media (max-width: 600px) {
+    header {
+        padding-top: 18px;
+    }
 
-        .card h2 {
-            font-size: 17px;
-            color: #475569;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+    .logo {
+        width: 72px;
+        height: 72px;
+    }
 
-        .number {
-            font-size: 29px;
-            font-weight: bold;
-            color: #172033;
-        }
+    .container {
+        padding: 20px 15px 25px;
+    }
 
-        /* 每日更新时间 */
-        .daily-update {
-            margin-top: 25px;
-            padding: 14px 18px;
-            text-align: center;
-            background: #fff0f0;
-            border: 1px solid #fecaca;
-            border-radius: 12px;
-            color: #dc2626;
-            font-size: 15px;
-            font-weight: bold;
-        }
+    .page-title {
+        margin-bottom: 24px;
+        font-size: 26px;
+    }
 
-        /* 页脚 */
-        footer {
-            text-align: center;
-            padding: 15px 15px 25px;
-            font-size: 12px;
-            color: #94a3b8;
-        }
+    .dashboard {
+        gap: 18px;
+    }
 
-        /* 移动设备适配 */
-        @media (max-width: 500px) {
-            header {
-                padding: 22px 15px;
-            }
+    .card {
+        min-height: 165px;
+        padding: 24px 18px;
+        border-radius: 21px;
+    }
 
-            .logo {
-                width: 85px;
-                height: 85px;
-            }
+    .card-content {
+        gap: 17px;
+    }
 
-            .container {
-                width: 92%;
-                margin: 28px auto;
-            }
+    .icon {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        font-size: 30px;
+        border-radius: 17px;
+    }
 
-            .page-title {
-                font-size: 22px;
-            }
+    .card h2 {
+        font-size: 17px;
+        margin-bottom: 10px;
+    }
 
-            .card {
-                padding: 21px 17px;
-            }
+    .number {
+        font-size: 31px;
+    }
 
-            .left-section {
-                gap: 12px;
-            }
-
-            .icon {
-                width: 46px;
-                height: 46px;
-                min-width: 46px;
-                font-size: 22px;
-            }
-
-            .card h2 {
-                font-size: 14px;
-            }
-
-            .number {
-                font-size: 24px;
-            }
-
-            .daily-update {
-                font-size: 14px;
-            }
-        }
-    </style>
+    .daily-update {
+        font-size: 14px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <!-- TeraBox 标志 -->
-    <header>
-        <img
-            src="https://www.image2url.com/r2/default/images/1793657800000-029f4a91-e6e7-4719-b49c-dc2f6cd6f6fd.png"
-            alt="TeraBox 标志"
-            class="logo"
-        >
-    </header>
+<header>
+    <img
+        src="https://www.image2url.com/r2/default/images/1793657800000-029f4a91-e6e7-4719-b49c-dc2f6cd6f6fd.png"
+        alt="TeraBox 标志"
+        class="logo"
+    >
+</header>
 
-    <!-- 数据仪表板 -->
-    <main class="container">
+<main class="container">
 
-        <h1 class="page-title">TeraBox 数据仪表板</h1>
+    <h1 class="page-title">TeraBox 数据仪表板</h1>
 
-        <div class="dashboard">
+    <div class="dashboard">
 
-            <!-- 总点击量 -->
-            <section class="card clicks-card" id="clicks">
-                <div class="card-content">
-                    <div class="left-section">
-                        <div class="icon clicks-icon">👆</div>
-
-                        <div>
-                            <h2>总点击量</h2>
-                            <div class="number" id="clickCount">12450</div>
-                        </div>
-                    </div>
+        <section class="card clicks-card">
+            <div class="card-content">
+                <div class="icon">👆</div>
+                <div>
+                    <h2>总点击量</h2>
+                    <div class="number" id="clickCount">12450</div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- 总下载量 -->
-            <section class="card downloads-card" id="downloads">
-                <div class="card-content">
-                    <div class="left-section">
-                        <div class="icon downloads-icon">📥</div>
-
-                        <div>
-                            <h2>总下载量</h2>
-                            <div class="number" id="downloadCount">3280</div>
-                        </div>
-                    </div>
+        <section class="card downloads-card">
+            <div class="card-content">
+                <div class="icon">📥</div>
+                <div>
+                    <h2>总下载量</h2>
+                    <div class="number" id="downloadCount">3280</div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- 总收益 -->
-            <section class="card earnings-card" id="earnings">
-                <div class="card-content">
-                    <div class="left-section">
-                        <div class="icon earnings-icon">💰</div>
-
-                        <div>
-                            <h2>总收益</h2>
-                            <div class="number" id="earningCount">₹8750</div>
-                        </div>
-                    </div>
+        <section class="card earnings-card">
+            <div class="card-content">
+                <div class="icon">💰</div>
+                <div>
+                    <h2>总收益</h2>
+                    <div class="number" id="earningCount">₹8750</div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-        </div>
+    </div>
 
-        <!-- 每日更新时间 -->
-        <div class="daily-update">
-            每日更新时间：下午 4 点至 6 点
-        </div>
+    <div class="daily-update">
+        每日更新时间：下午 4 点至 6 点
+    </div>
 
-    </main>
+</main>
 
-    <!-- 页脚 -->
-    <footer>
-        &copy; 2026 TeraBox 数据仪表板
-    </footer>
+<footer>
+    &copy; 2026 TeraBox 数据仪表板
+</footer>
 
-    <script>
-        // 在这里修改仪表板数据
-        const dashboardData = {
-            clicks: 12450,
-            downloads: 3280,
-            earnings: 8750
-        };
+<script>
+const dashboardData = {
+    clicks: 12450,
+    downloads: 3280,
+    earnings: 8750
+};
 
-        // 显示不带逗号的数字
-        document.getElementById("clickCount").textContent =
-            dashboardData.clicks;
+document.getElementById("clickCount").textContent =
+    dashboardData.clicks;
 
-        document.getElementById("downloadCount").textContent =
-            dashboardData.downloads;
+document.getElementById("downloadCount").textContent =
+    dashboardData.downloads;
 
-        document.getElementById("earningCount").textContent =
-            "₹" + dashboardData.earnings;
-    </script>
+document.getElementById("earningCount").textContent =
+    "₹" + dashboardData.earnings;
+</script>
 
 </body>
 </html>
